@@ -1,12 +1,19 @@
 <h1><%= @place["name"] %></h1>
 
-<h2>My Entries</h2>
-<% for entry in @entries %>
-  <h3><%= entry["title"] %></h3>
-  <h4><%= entry["occurred_on"] %></h4>
-  <p><%= entry["description"] %></p>
-<% end %>
-
+<div class="row">
+  <% for entry in @entries %>
+    <div class="col-12 col-sm-6 col-lg-3">
+    <% user = User.find_by({ "id" => entry["id"] }) %>
+    <% if user != nil %>
+      <h3> <%= user["username"] %> </h3>
+    <% else %>
+      <h3> <%= anonymous %> </h3>
+    <% end %>
+    <h3><%= entry["title"] %></h3>
+    <h4><%= entry["occurred_on"] %></h4>
+    <p><%= entry["description"] %></p>
+  <% end %>
+</div>
 <p>
   <a href="/entries/new?place_id=<%= @place["id"] %>">New Entry</a>
 </p>
