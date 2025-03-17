@@ -1,30 +1,32 @@
-<h1><%= @place["name"] %></h1>
-<p>
-  <a href="/entries/new?place_id=<%= @place["id"] %>">New Entry</a>
-</p>
+<div class="d-flex justify-content-between align-items-center my-4">
+  <h1 class="mb-0"><%= @place["name"] %></h1>
+  <div>
+    <a href="/entries/new?place_id=<%= @place["id"] %>" class="btn btn-primary me-2">New Entry</a>
+    <a href="/places" class="btn btn-secondary">Back to All Places</a>
+  </div>
+</div>
 
-<p>
-  <a href="/places">Back to All Places</a>
-</p>
 <div class="row">
-  <% for entry in @entries %>
-    <div class="col-12 col-sm-6 col-lg-3">
-    <h3> 
-      <% if @user != nil %>
-        <%= @user["username"] %> 
-      <% else %>
-        You must first <a href="/login">login</a> to see your posts.
-      <% end %>
-    </h3>
-    <h3><%= entry["title"] %></h3>
-    <h3><%= entry["occurred_on"] %></h3>
-    <h3><%= entry["description"] %></h3>
-    
-    <% if entry.uploaded_image.attached? %>
-        <%# use url_for(post.uploaded_image) as attached file's url %>
-        <img src="<%= url_for(entry.uploaded_image) %>" class="img-fluid">
-      <% else %>
-        No image attached
+  <% if @user %>
+    <% for entry in @entries %>
+      <div class="col-12 col-sm-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title"><%= entry["title"] %></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%= entry["occurred_on"] %></h6>
+            <p class="card-text"><%= entry["description"] %></p>
+            
+            <% if entry.uploaded_image.attached? %>
+              <img src="<%= url_for(entry.uploaded_image) %>" class="img-fluid rounded">
+            <% else %>
+              <p class="text-muted">No image attached</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% end %>
+  <% else %>
+    <p class="text-muted">You must first <a href="/login">login</a> to see your posts.</p>
   <% end %>
 </div>
+
